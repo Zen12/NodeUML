@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class CustomWindow : EditorWindow
+public class NodeUML : EditorWindow
 {
 
 	NodeController controller;
@@ -11,7 +11,7 @@ public class CustomWindow : EditorWindow
 	[MenuItem("Window/UML Node")]
 	private static void ShowView()
 	{
-		CustomWindow editor = EditorWindow.GetWindow<CustomWindow>();
+		NodeUML editor = EditorWindow.GetWindow<NodeUML>();
 		editor.Init();
 	}
 

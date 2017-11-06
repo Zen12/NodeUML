@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [System.Serializable]
 public class Node
@@ -10,12 +9,14 @@ public class Node
 
     public string NodeName { private set; get; }
 
-    private int id;
+    public int id;
 
     [SerializeField]
     private List<NodeInfoItem> listProperty;
     [SerializeField]
     private List<NodeInfoItem> listMethods;
+
+    public List<Node> RelationsToID;
 
     public Node(Rect position, string name, int id)
     {
@@ -24,16 +25,12 @@ public class Node
         this.id = id;
         listProperty = new List<NodeInfoItem>();
         listMethods = new List<NodeInfoItem>();
+        RelationsToID = new List<Node>();
     }
 
-    public Node(string json)
+    public void AddRelationId(Node node)
     {
-        JsonUtility.FromJsonOverwrite(json, this);
-    }
-
-    public override string ToString()
-    {
-        return JsonUtility.ToJson(this);
+        RelationsToID.Add(node);
     }
 
     public void DrawNode()
