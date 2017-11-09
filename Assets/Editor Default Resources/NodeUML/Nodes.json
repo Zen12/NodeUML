@@ -1,3 +1,1 @@
-{
-  "a":"a"
-}
+{"listNodes":[{"id":1,"nodeName":"Win1","transform":{"serializedVersion":"2","x":10.0,"y":10.0,"width":100.0,"height":200.0},"listProperty":[],"listMethods":[],"RelationsToID":[2,3]},{"id":2,"nodeName":"Win2","transform":{"serializedVersion":"2","x":210.0,"y":210.0,"width":100.0,"height":200.0},"listProperty":[],"listMethods":[],"RelationsToID":[]},{"id":3,"nodeName":"Win3","transform":{"serializedVersion":"2","x":410.0,"y":310.0,"width":100.0,"height":200.0},"listProperty":[],"listMethods":[],"RelationsToID":[]}]}

@@ -5,48 +5,46 @@ using UnityEngine;
 [System.Serializable]
 public class Node
 {
-    public Rect Transform { private set; get; }
-
-    public string NodeName { private set; get; }
-
     public int id;
-
+    public string nodeName;
+    [SerializeField]
+    public Rect transform;
     [SerializeField]
     private List<NodeInfoItem> listProperty;
     [SerializeField]
     private List<NodeInfoItem> listMethods;
 
-    public List<Node> RelationsToID;
+    public List<int> RelationsToID;
 
     public Node(Rect position, string name, int id)
     {
-        NodeName = name;
-        Transform = position;
+        nodeName = name;
+        transform = position;
         this.id = id;
         listProperty = new List<NodeInfoItem>();
         listMethods = new List<NodeInfoItem>();
-        RelationsToID = new List<Node>();
+        RelationsToID = new List<int>();
     }
 
     public void AddRelationId(Node node)
     {
-        RelationsToID.Add(node);
+        RelationsToID.Add(node.id);
     }
 
     public void DrawNode()
     {
-        Transform = GUI.Window(id, Transform, UpdateNode, NodeName); 
+        transform = GUI.Window(id, transform, UpdateNode, nodeName); 
     }
 
     private void UpdateNode(int id)
     {
-        GUILayout.BeginVertical(GUILayout.Width(Transform.width - 15));
+        GUILayout.BeginVertical(GUILayout.Width(transform.width - 15));
         for (int i = 0; i < listProperty.Count; i++)
         {
             listProperty[i].Draw();
         }
 
-        if (GUILayout.Button("New Property", GUILayout.Width(Transform.width - 15)))
+        if (GUILayout.Button("New Property", GUILayout.Width(transform.width - 15)))
         {
             listProperty.Add(new NodeInfoItem("", this));
         }
@@ -56,7 +54,7 @@ public class Node
             listMethods[i].Draw();
         }
 
-        if (GUILayout.Button("New Method", GUILayout.Width(Transform.width - 15)))
+        if (GUILayout.Button("New Method", GUILayout.Width(transform.width - 15)))
         {
             listMethods.Add(new NodeInfoItem("", this));
         }
