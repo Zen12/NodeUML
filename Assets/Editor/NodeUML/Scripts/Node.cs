@@ -26,6 +26,19 @@ public class Node
         RelationsToID = new List<int>();
     }
 
+    public void UpdateNodeDependesy()
+    {
+        for (int i = 0; i < listProperty.Count; i++)
+        {
+            listProperty[i].UpdateNode(this);
+        }
+
+        for (int i = 0; i < listMethods.Count; i++)
+        {
+            listMethods[i].UpdateNode(this);
+        }
+    }
+
     public void AddRelationId(Node node)
     {
         RelationsToID.Add(node.id);

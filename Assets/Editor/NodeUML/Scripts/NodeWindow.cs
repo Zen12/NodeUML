@@ -25,9 +25,12 @@ public class NodeUML : EditorWindow
         BeginWindows();
         float devider = 5f;
         GUILayout.BeginArea(new Rect(position.width - position.width / devider, 0, position.width / devider, position.height));
-        GUILayout.Box("Info", GUILayout.Height(position.height), GUILayout.Width(position.width / devider));
+        if (GUILayout.Button("Save Data", GUILayout.Height(40), GUILayout.Width(100)))
+        {
+            controller.SaveData();
+            Debug.Log("Data saved");
+        }
         GUILayout.EndArea();
-
         //Draw all the Nodes
         controller.DrawNodes();
         EndWindows();

@@ -5,27 +5,26 @@ using UnityEngine;
 [System.Serializable]
 public class NodeInfoItem
 {
-
-    public string Text{ private set; get; }
+    public string text;
 
     [System.NonSerialized]
     private Node node;
 
     public NodeInfoItem(string text, Node node)
     {
-        Text = text;
+        this.text = text;
         this.node = node;
     }
 
-    public NodeInfoItem(string json)
+    public void UpdateNode(Node node)
     {
-        JsonUtility.FromJsonOverwrite(json, this);
+        this.node = node;
     }
 
     public void Draw()
     {
         GUILayout.BeginHorizontal(GUILayout.Width(node.transform.width - 15));
-        Text = GUILayout.TextField(Text, GUILayout.Width(node.transform.width - 25));
+        text = GUILayout.TextField(text, GUILayout.Width(node.transform.width - 25));
         if (GUILayout.Button("X", GUILayout.Width(15)))
         {
             node.DeleteNodeInfo(this);

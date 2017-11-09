@@ -16,10 +16,9 @@ public class NodeController
     {
         LoadData();
         nodeRelation = new NodeRelation();
-        SaveData();
     }
 
-    private void SaveData()
+    public void SaveData()
     {
         string json = JsonUtility.ToJson(this);
         SaveUtility.SaveInProject(json, NodeConsts.FullResourcesFolder + "/" + NodeConsts.NodeDataFile);
@@ -34,9 +33,12 @@ public class NodeController
         if (o != null)
         {
             json = ((TextAsset)o).text;
+            JsonUtility.FromJsonOverwrite(json, this);
+            for (int i = 0; i < listNodes.Count; i++)
+            {
+                listNodes[i].UpdateNodeDependesy();
+            }
         }
-        JsonUtility.FromJsonOverwrite(json, this);
-
         //fill with some data
         if (listNodes == null || listNodes.Count == 0)
         {
