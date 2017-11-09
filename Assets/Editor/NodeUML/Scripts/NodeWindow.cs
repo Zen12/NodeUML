@@ -3,37 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class NodeUML : EditorWindow
+namespace NodeUML
 {
-
-    NodeController controller;
-
-    [MenuItem("Window/UML Node")]
-    private static void ShowView()
+    public class NodeUML : EditorWindow
     {
-        NodeUML editor = EditorWindow.GetWindow<NodeUML>();
-        editor.Init();
-    }
 
-    public void Init()
-    {
-        controller = new NodeController();
-    }
+        NodeController controller;
 
-    void OnGUI()
-    {
-        BeginWindows();
-        float devider = 5f;
-        GUILayout.BeginArea(new Rect(position.width - position.width / devider, 0, position.width / devider, position.height));
-        if (GUILayout.Button("Save Data", GUILayout.Height(40), GUILayout.Width(100)))
+        [MenuItem("Window/UML Node")]
+        private static void ShowView()
         {
-            controller.SaveData();
-            Debug.Log("Data saved");
+            NodeUML editor = EditorWindow.GetWindow<NodeUML>();
+            editor.Init();
         }
-        GUILayout.EndArea();
-        //Draw all the Nodes
-        controller.DrawNodes();
-        EndWindows();
-    }
 
+        public void Init()
+        {
+            controller = new NodeController();
+        }
+
+        void OnGUI()
+        {
+            BeginWindows();
+            float devider = 5f;
+            GUILayout.BeginArea(new Rect(position.width - position.width / devider, 0, position.width / devider, position.height));
+            if (GUILayout.Button("Save Data", GUILayout.Height(40), GUILayout.Width(100)))
+            {
+                controller.SaveData();
+                Debug.Log("Data saved");
+            }
+            GUILayout.EndArea();
+            //Draw all the Nodes
+            controller.DrawNodes();
+            EndWindows();
+        }
+
+    }
 }

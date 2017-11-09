@@ -4,17 +4,19 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-public static class SaveUtility
+namespace NodeUML
 {
-    //TODO tested it on windows
-    public static void SaveInProject(string data, string path)
+    public static class SaveUtility
     {
-        path = Application.dataPath + path;
-        if (File.Exists(path))
+        public static void SaveInProject(string data, string path)
         {
-            File.Delete(path);
+            path = Application.dataPath + path;
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            File.WriteAllText(path, data);
         }
-        File.WriteAllText(path, data);
-    }
 
+    }
 }
