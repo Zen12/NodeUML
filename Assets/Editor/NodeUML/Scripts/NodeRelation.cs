@@ -30,6 +30,7 @@ namespace NodeUML
                     relationState.isMakingRelationState = false;
                 }
             }
+
         }
 
         public void OnDeleteField(int idClass, ulong idFiled)
