@@ -18,6 +18,7 @@ namespace NodeUML
         public List<NodeInfoItem> listProperty;
         [SerializeField]
         public List<NodeInfoItem> listMethods;
+
         [SerializeField]
         #else
         [SerializeField]
@@ -27,38 +28,30 @@ namespace NodeUML
         [SerializeField]
         #endif
         [System.NonSerialized]
-        public IdHandler idHandler;
+        private NodeContext context;
 
-        private System.Action<int, ulong> OnMakeRelation;
-
-        private event System.Action<int> OnMakeRelationToClass;
-
-        public Node(Rect position, string name, IdHandler idHandler, System.Action<int, ulong> onMakeRelation, System.Action<int> onMakeRelationToClass)
+        public Node(Rect position, string name, NodeContext context)
         {
             nodeName = name;
             transform = position;
-            OnMakeRelation = onMakeRelation;
-            OnMakeRelationToClass += onMakeRelationToClass;
-
+            this.context = context;
+            this.id = context.idHandler.GetClassID();
             listProperty = new List<NodeInfoItem>();
             listMethods = new List<NodeInfoItem>();
-            this.idHandler = idHandler;
-            this.id = idHandler.GetClassID();
+           
         }
 
-        public void UpdateNodeDependesy(IdHandler idHandler, System.Action<int, ulong> onMakeRelation, System.Action<int> onMakeRelationToClass)
+        public void UpdateNodeDependesy(NodeContext context)
         {
-            OnMakeRelationToClass += onMakeRelationToClass;
-            this.OnMakeRelation = onMakeRelation;
-            this.idHandler = idHandler;
+            this.context = context;
             for (int i = 0; i < listProperty.Count; i++)
             {
-                listProperty[i].UpdateNode(this, onMakeRelation);
+                listProperty[i].UpdateNode(this, context);
             }
 
             for (int i = 0; i < listMethods.Count; i++)
             {
-                listMethods[i].UpdateNode(this, onMakeRelation);
+                listMethods[i].UpdateNode(this, context);
             }
         }
 
@@ -87,24 +80,11 @@ namespace NodeUML
 
         private void UpdateEvents()
         {
-//            if (Event.current.type == EventType.MouseDown && PointIsWithinRect(Event.current.MousePosition, myDraggableObject.rect))
-//            {
-//                currentlyDragged = myDraggableObject;
-//            }
-//            else if (Event.current.type == EventType.MouseDrag && currentlyDragged != null)
-//            {
-//                currentlyDragged.rect = new Rect(currentlyDragged.rect.x + Event.current.mousePosition.x, currentlyDragged.rect.y + Event.current.mousePosition.y, currentlyDragged.rect.width, currentlyDragged.rect.height);
-//            }
-//            else if (Event.current.type == EventType.MouseUp)
-//            {
-//                currentlyDragged = null;
-//            }
-
             if (Event.current.button == 0)
             {
                 if (transform.Contains(Event.current.mousePosition))
                 {
-                    OnMakeRelationToClass(id);
+                    context.OnMakeRelationToClass(id);
                 }
             }
         }
@@ -119,7 +99,7 @@ namespace NodeUML
 
             if (GUILayout.Button("New Property", GUILayout.Width(transform.width - 15)))
             {
-                listProperty.Add(new NodeInfoItem("", this, OnMakeRelation));
+                listProperty.Add(new NodeInfoItem("", this, context));
             }
             GUILayout.Space(10);
             for (int i = 0; i < listMethods.Count; i++)
@@ -129,7 +109,7 @@ namespace NodeUML
 
             if (GUILayout.Button("New Method", GUILayout.Width(transform.width - 15)))
             {
-                listMethods.Add(new NodeInfoItem("", this, OnMakeRelation));
+                listMethods.Add(new NodeInfoItem("", this, context));
             }
             GUILayout.EndVertical();
             GUI.DragWindow();

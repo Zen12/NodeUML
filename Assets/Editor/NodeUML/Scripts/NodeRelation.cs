@@ -12,11 +12,9 @@ namespace NodeUML
         private List<ClassRelation> classRelations;
         private RelationState relationState = new RelationState();
 
-        private bool isMakingRelation = false;
 
         public void OnMakeRelation(int idClass, ulong idField)
         {
-            Debug.Log("Update " + idClass + " " + idField);
             relationState.isMakingRelationState = true;
             relationState.selectedClassID = idClass;
             relationState.selectedFieldID = idField;
@@ -32,6 +30,11 @@ namespace NodeUML
                     relationState.isMakingRelationState = false;
                 }
             }
+        }
+
+        public void OnDeleteField(int idClass, ulong idFiled)
+        {
+            RemoveRelation(idClass, idFiled);
         }
 
         public NodeRelation()
@@ -55,7 +58,7 @@ namespace NodeUML
                     {
                         for (int p = 0; p < nodes[i].listProperty.Count; p++)
                         {
-                            if (classRelations[k].IsRelation(nodes[i].id, nodes[i].listProperty[p].ID, nodes[j].id))
+                            if (classRelations[k].IsRelevantRelation(nodes[i].id, nodes[i].listProperty[p].ID, nodes[j].id))
                             {
                                 DrawNodeCurve(nodes[i].transform, nodes[j].transform, p);
                             }
@@ -69,6 +72,11 @@ namespace NodeUML
         {
             var r = new ClassRelation(nodeId1, fieldId1, nodeId2);
             classRelations.Add(r);
+        }
+
+        private void RemoveRelation(int classID, ulong fieldID)
+        {
+            classRelations.RemoveAll((ClassRelation o) => o.class1.classID == classID && o.class1.fieldID == fieldID);
         }
 
         private void DrawNodeCurve(Rect start, Rect end, int indexP1)
@@ -107,7 +115,7 @@ namespace NodeUML
             idClass = n2;
         }
 
-        public bool IsRelation(int n1, ulong field1, int n2)
+        public bool IsRelevantRelation(int n1, ulong field1, int n2)
         {
             return (class1.IsRelevantClass(n1, field1) && idClass == n2);
         }

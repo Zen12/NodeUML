@@ -14,13 +14,13 @@ namespace NodeUML
         private IdHandler idHandler;
         [SerializeField]
         private NodeRelation nodeRelation;
-        [System.NonSerialized]
-        private Node currentSelected;
+        private NodeContext context;
 
         public NodeController()
         {
             idHandler = new IdHandler();
             nodeRelation = new NodeRelation();
+            context = new NodeContext(idHandler, nodeRelation.OnMakeRelation, nodeRelation.OnClickOnClass, nodeRelation.OnDeleteField);
             LoadData();
         }
 
@@ -33,7 +33,7 @@ namespace NodeUML
 
         public void CreateNewNode(string name)
         {
-            var node = new Node(NodeConsts.NodeTransform, name, idHandler, nodeRelation.OnMakeRelation, nodeRelation.OnClickOnClass);
+            var node = new Node(NodeConsts.NodeTransform, name, context);
             listNodes.Add(node);
         }
 
@@ -47,7 +47,7 @@ namespace NodeUML
                 JsonUtility.FromJsonOverwrite(json, this);
                 for (int i = 0; i < listNodes.Count; i++)
                 {
-                    listNodes[i].UpdateNodeDependesy(idHandler, nodeRelation.OnMakeRelation, nodeRelation.OnClickOnClass);
+                    listNodes[i].UpdateNodeDependesy(context);
                 }
             }
             #if UML_NODE_DEBUB
@@ -55,17 +55,17 @@ namespace NodeUML
             if (listNodes == null || listNodes.Count == 0)
             {
                 Debug.Log("Add some data");
-                var n1 = new Node(new Rect(10, 10, NodeConsts.NodeWith, NodeConsts.NodeHeight), "Win1", idHandler, nodeRelation.OnMakeRelation, nodeRelation.OnClickOnClass);
-                var n2 = new Node(new Rect(210, 210, NodeConsts.NodeWith, NodeConsts.NodeHeight), "Win2", idHandler, nodeRelation.OnMakeRelation, nodeRelation.OnClickOnClass);
-                var n3 = new Node(new Rect(410, 310, NodeConsts.NodeWith, NodeConsts.NodeHeight), "Win3", idHandler, nodeRelation.OnMakeRelation, nodeRelation.OnClickOnClass);
+                var n1 = new Node(new Rect(10, 10, NodeConsts.NodeWith, NodeConsts.NodeHeight), "Win1", context);
+                var n2 = new Node(new Rect(210, 210, NodeConsts.NodeWith, NodeConsts.NodeHeight), "Win2", context);
+                var n3 = new Node(new Rect(410, 310, NodeConsts.NodeWith, NodeConsts.NodeHeight), "Win3", context);
 
-                var f1 = new NodeInfoItem("1", n1, nodeRelation.OnMakeRelation);
-                var f2 = new NodeInfoItem("2", n2, nodeRelation.OnMakeRelation);
-                var f3 = new NodeInfoItem("3", n3, nodeRelation.OnMakeRelation);
-                var f4 = new NodeInfoItem("4", n3, nodeRelation.OnMakeRelation);
-                var f5 = new NodeInfoItem("5", n3, nodeRelation.OnMakeRelation);
-                var f6 = new NodeInfoItem("6", n3, nodeRelation.OnMakeRelation);
-                var f7 = new NodeInfoItem("7", n3, nodeRelation.OnMakeRelation);
+                var f1 = new NodeInfoItem("1", n1, context);
+                var f2 = new NodeInfoItem("2", n2, context);
+                var f3 = new NodeInfoItem("3", n3, context);
+                var f4 = new NodeInfoItem("4", n3, context);
+                var f5 = new NodeInfoItem("5", n3, context);
+                var f6 = new NodeInfoItem("6", n3, context);
+                var f7 = new NodeInfoItem("7", n3, context);
 
                 n1.AddField(f1);
                 n2.AddField(f2);
@@ -82,10 +82,6 @@ namespace NodeUML
                 {
                     n1, n2, n3
                 };
-//
-//                nodeRelation.AddRelation(n1.id, n1.listProperty[0].ID, n2.id, n2.listProperty[0].ID);
-//                nodeRelation.AddRelation(n1.id, n1.listProperty[0].ID, n3.id, n3.listProperty[0].ID);
-
             }
             #endif
         }
