@@ -10,6 +10,29 @@ namespace NodeUML
     {
         [SerializeField]
         private List<ClassRelation> classRelations;
+        private RelationState relationState = new RelationState();
+
+        private bool isMakingRelation = false;
+
+        public void OnMakeRelation(int idClass, ulong idField)
+        {
+            Debug.Log("Update " + idClass + " " + idField);
+            relationState.isMakingRelationState = true;
+            relationState.selectedClassID = idClass;
+            relationState.selectedFieldID = idField;
+        }
+
+        public void OnClickOnClass(int idClass)
+        {
+            if (relationState.isMakingRelationState)
+            {
+                if (idClass != relationState.selectedClassID)
+                {
+                    AddRelation(relationState.selectedClassID, relationState.selectedFieldID, idClass);
+                    relationState.isMakingRelationState = false;
+                }
+            }
+        }
 
         public NodeRelation()
         {
@@ -26,18 +49,15 @@ namespace NodeUML
 
             for (int i = 0; i < nodes.Count; i++)//n1
             {
-                for (int j = i; j < nodes.Count; j++)//n2
+                for (int j = 0; j < nodes.Count; j++)//n2
                 {
                     for (int k = 0; k < classRelations.Count; k++)
                     {
-                        for (int p1 = 0; p1 < nodes[i].listProperty.Count; p1++)
+                        for (int p = 0; p < nodes[i].listProperty.Count; p++)
                         {
-                            for (int p2 = 0; p2 < nodes[j].listProperty.Count; p2++)
+                            if (classRelations[k].IsRelation(nodes[i].id, nodes[i].listProperty[p].ID, nodes[j].id))
                             {
-                                if (classRelations[k].IsRelation(nodes[i].id, nodes[i].listProperty[p1].ID, nodes[j].id, nodes[j].listProperty[p2].ID))
-                                {
-                                    DrawNodeCurve(nodes[i].transform, nodes[j].transform, p1, p2);
-                                }
+                                DrawNodeCurve(nodes[i].transform, nodes[j].transform, p);
                             }
                         }
                     }
@@ -45,20 +65,19 @@ namespace NodeUML
             }
         }
 
-        public void AddRelation(int nodeId1, ulong fieldId1, int nodeId2, ulong fieldId2)
+        public void AddRelation(int nodeId1, ulong fieldId1, int nodeId2)
         {
-            var r = new ClassRelation(nodeId1, fieldId1, nodeId2, fieldId2);
+            var r = new ClassRelation(nodeId1, fieldId1, nodeId2);
             classRelations.Add(r);
         }
 
-        private void DrawNodeCurve(Rect start, Rect end, int indexP1, int indexP2)
+        private void DrawNodeCurve(Rect start, Rect end, int indexP1)
         {
             float direction = -1f;
             float offcetStart = 0f;
             float offcetEnd = 1f;
 
             float heightP1 = 30f + (23f * indexP1);
-            float heightP2 = 30f + (23f * indexP2);
 
             if (start.x < end.x)
             {
@@ -68,7 +87,7 @@ namespace NodeUML
             }
 
             Vector3 startPos = new Vector3(start.x + start.width * offcetStart, start.y + heightP1, 0);
-            Vector3 endPos = new Vector3(end.x + end.width * offcetEnd, end.y + heightP2, 0);
+            Vector3 endPos = new Vector3(end.x + end.width * offcetEnd, end.y + 10f, 0);
 
             Vector3 startTan = startPos + Vector3.right * 50 * direction;
             Vector3 endTan = endPos + Vector3.left * 50 * direction;
@@ -80,18 +99,17 @@ namespace NodeUML
     public struct ClassRelation
     {
         public ClassData class1;
-        public ClassData class2;
+        public int idClass;
 
-        public ClassRelation(int n1, ulong field1, int n2, ulong field2)
+        public ClassRelation(int n1, ulong field1, int n2)
         {
             class1 = new ClassData(n1, field1);
-            class2 = new ClassData(n2, field2);
+            idClass = n2;
         }
 
-        public bool IsRelation(int n1, ulong field1, int n2, ulong field2)
+        public bool IsRelation(int n1, ulong field1, int n2)
         {
-            return (class1.IsRelevantClass(n1, field1) && class2.IsRelevantClass(n2, field2))
-            || (class2.IsRelevantClass(n1, field1) && class1.IsRelevantClass(n2, field2));
+            return (class1.IsRelevantClass(n1, field1) && idClass == n2);
         }
                        
     }
@@ -112,5 +130,14 @@ namespace NodeUML
         {
             return c == classID && f == fieldID;
         }
+    }
+
+    internal class RelationState
+    {
+        public int selectedClassID;
+        public ulong selectedFieldID;
+
+        public bool isMakingRelationState = false;
+        
     }
 }

@@ -29,10 +29,16 @@ namespace NodeUML
         [System.NonSerialized]
         public IdHandler idHandler;
 
-        public Node(Rect position, string name, IdHandler idHandler)
+        private System.Action<int, ulong> OnMakeRelation;
+
+        private event System.Action<int> OnMakeRelationToClass;
+
+        public Node(Rect position, string name, IdHandler idHandler, System.Action<int, ulong> onMakeRelation, System.Action<int> onMakeRelationToClass)
         {
             nodeName = name;
             transform = position;
+            OnMakeRelation = onMakeRelation;
+            OnMakeRelationToClass += onMakeRelationToClass;
 
             listProperty = new List<NodeInfoItem>();
             listMethods = new List<NodeInfoItem>();
@@ -40,17 +46,19 @@ namespace NodeUML
             this.id = idHandler.GetClassID();
         }
 
-        public void UpdateNodeDependesy(IdHandler idHandler)
+        public void UpdateNodeDependesy(IdHandler idHandler, System.Action<int, ulong> onMakeRelation, System.Action<int> onMakeRelationToClass)
         {
+            OnMakeRelationToClass += onMakeRelationToClass;
+            this.OnMakeRelation = onMakeRelation;
             this.idHandler = idHandler;
             for (int i = 0; i < listProperty.Count; i++)
             {
-                listProperty[i].UpdateNode(this);
+                listProperty[i].UpdateNode(this, onMakeRelation);
             }
 
             for (int i = 0; i < listMethods.Count; i++)
             {
-                listMethods[i].UpdateNode(this);
+                listMethods[i].UpdateNode(this, onMakeRelation);
             }
         }
 
@@ -74,6 +82,31 @@ namespace NodeUML
             #else
             transform = GUI.Window(id, transform, UpdateNode, nodeName + " ID: " + id); 
             #endif
+            UpdateEvents();
+        }
+
+        private void UpdateEvents()
+        {
+//            if (Event.current.type == EventType.MouseDown && PointIsWithinRect(Event.current.MousePosition, myDraggableObject.rect))
+//            {
+//                currentlyDragged = myDraggableObject;
+//            }
+//            else if (Event.current.type == EventType.MouseDrag && currentlyDragged != null)
+//            {
+//                currentlyDragged.rect = new Rect(currentlyDragged.rect.x + Event.current.mousePosition.x, currentlyDragged.rect.y + Event.current.mousePosition.y, currentlyDragged.rect.width, currentlyDragged.rect.height);
+//            }
+//            else if (Event.current.type == EventType.MouseUp)
+//            {
+//                currentlyDragged = null;
+//            }
+
+            if (Event.current.button == 0)
+            {
+                if (transform.Contains(Event.current.mousePosition))
+                {
+                    OnMakeRelationToClass(id);
+                }
+            }
         }
 
         private void UpdateNode(int id)
@@ -86,7 +119,7 @@ namespace NodeUML
 
             if (GUILayout.Button("New Property", GUILayout.Width(transform.width - 15)))
             {
-                listProperty.Add(new NodeInfoItem("", this));
+                listProperty.Add(new NodeInfoItem("", this, OnMakeRelation));
             }
             GUILayout.Space(10);
             for (int i = 0; i < listMethods.Count; i++)
@@ -96,7 +129,7 @@ namespace NodeUML
 
             if (GUILayout.Button("New Method", GUILayout.Width(transform.width - 15)))
             {
-                listMethods.Add(new NodeInfoItem("", this));
+                listMethods.Add(new NodeInfoItem("", this, OnMakeRelation));
             }
             GUILayout.EndVertical();
             GUI.DragWindow();

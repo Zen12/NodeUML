@@ -13,16 +13,21 @@ namespace NodeUML
         [System.NonSerialized]
         private Node node;
 
-        public NodeInfoItem(string text, Node node)
+        private event System.Action<int, ulong> OnMakeRealation;
+
+        public NodeInfoItem(string text, Node node, System.Action<int, ulong> onMakeRelation)
         {
             this.text = text;
             this.node = node;
             ID = node.idHandler.GetNodeInfoItemID();
+            OnMakeRealation += onMakeRelation;
+
         }
 
-        public void UpdateNode(Node node)
+        public void UpdateNode(Node node, System.Action<int, ulong> onMakeRelation)
         {
             this.node = node;
+            OnMakeRealation += onMakeRelation;
         }
 
         public void Draw()
@@ -31,7 +36,7 @@ namespace NodeUML
 
             if (GUILayout.Button("<", GUILayout.Width(20)))
             {
-                Debug.Log("Relation");
+                OnMakeRealation(node.id, ID);
             }
 
             text = GUILayout.TextField(text, GUILayout.Width(node.transform.width - (15 + 20 + 13)));

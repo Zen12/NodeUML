@@ -42,7 +42,7 @@ namespace NodeUML
                 Debug.Log("Data saved");
             }
 
-            if (GUILayout.Button("Create New Node", GUILayout.Height(40), GUILayout.Width(100)))
+            if (GUILayout.Button("New Node", GUILayout.Height(40), GUILayout.Width(100)))
             {
                 controller.CreateNewNode("aa");
             }
