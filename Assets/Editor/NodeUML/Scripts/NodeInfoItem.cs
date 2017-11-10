@@ -7,6 +7,7 @@ namespace NodeUML
     [System.Serializable]
     public class NodeInfoItem
     {
+        public ulong ID;
         public string text;
 
         [System.NonSerialized]
@@ -16,6 +17,7 @@ namespace NodeUML
         {
             this.text = text;
             this.node = node;
+            ID = node.idHandler.GetNodeInfoItemID();
         }
 
         public void UpdateNode(Node node)
@@ -26,7 +28,13 @@ namespace NodeUML
         public void Draw()
         {
             GUILayout.BeginHorizontal(GUILayout.Width(node.transform.width - 15));
-            text = GUILayout.TextField(text, GUILayout.Width(node.transform.width - 25));
+
+            if (GUILayout.Button("<", GUILayout.Width(20)))
+            {
+                Debug.Log("Relation");
+            }
+
+            text = GUILayout.TextField(text, GUILayout.Width(node.transform.width - (15 + 20 + 13)));
             if (GUILayout.Button("X", GUILayout.Width(15)))
             {
                 node.DeleteNodeInfo(this);

@@ -8,28 +8,41 @@ namespace NodeUML
     public class Node
     {
         public int id;
+
         public string nodeName;
         [SerializeField]
         public Rect transform;
+
+        #if UML_NODE_DEBUB
+        [SerializeField]
+        public List<NodeInfoItem> listProperty;
+        [SerializeField]
+        public List<NodeInfoItem> listMethods;
+        [SerializeField]
+        #else
         [SerializeField]
         private List<NodeInfoItem> listProperty;
         [SerializeField]
         private List<NodeInfoItem> listMethods;
+        [SerializeField]
+        #endif
+        [System.NonSerialized]
+        public IdHandler idHandler;
 
-        public List<int> RelationsToID;
-
-        public Node(Rect position, string name, int id)
+        public Node(Rect position, string name, IdHandler idHandler)
         {
             nodeName = name;
             transform = position;
-            this.id = id;
+
             listProperty = new List<NodeInfoItem>();
             listMethods = new List<NodeInfoItem>();
-            RelationsToID = new List<int>();
+            this.idHandler = idHandler;
+            this.id = idHandler.GetClassID();
         }
 
-        public void UpdateNodeDependesy()
+        public void UpdateNodeDependesy(IdHandler idHandler)
         {
+            this.idHandler = idHandler;
             for (int i = 0; i < listProperty.Count; i++)
             {
                 listProperty[i].UpdateNode(this);
@@ -41,14 +54,26 @@ namespace NodeUML
             }
         }
 
-        public void AddRelationId(Node node)
+        private NodeInfoItem GetFiledById(ulong id)
         {
-            RelationsToID.Add(node.id);
+            for (int i = 0; i < listProperty.Count; i++)
+            {
+                if (listProperty[i].ID == id)
+                {
+                    return listProperty[i];
+                }
+            }
+
+            return null;
         }
 
         public void DrawNode()
         {
+            #if !UML_NODE_DEBUB
             transform = GUI.Window(id, transform, UpdateNode, nodeName); 
+            #else
+            transform = GUI.Window(id, transform, UpdateNode, nodeName + " ID: " + id); 
+            #endif
         }
 
         private void UpdateNode(int id)
@@ -82,6 +107,17 @@ namespace NodeUML
             listProperty.Remove(info);
             listMethods.Remove(info);
         }
+
+        public void AddField(NodeInfoItem n)
+        {
+            listProperty.Add(n);
+        }
+
+        public void AddMethod(NodeInfoItem n)
+        {
+            listMethods.Add(n);
+        }
+
     }
 }
 

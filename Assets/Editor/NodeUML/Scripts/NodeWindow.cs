@@ -27,15 +27,25 @@ namespace NodeUML
             BeginWindows();
             float devider = 5f;
             GUILayout.BeginArea(new Rect(position.width - position.width / devider, 0, position.width / devider, position.height));
+            Buttons();
+            GUILayout.EndArea();
+            //Draw all the Nodes
+            controller.DrawNodes();
+            EndWindows();
+        }
+
+        void Buttons()
+        {
             if (GUILayout.Button("Save Data", GUILayout.Height(40), GUILayout.Width(100)))
             {
                 controller.SaveData();
                 Debug.Log("Data saved");
             }
-            GUILayout.EndArea();
-            //Draw all the Nodes
-            controller.DrawNodes();
-            EndWindows();
+
+            if (GUILayout.Button("Create New Node", GUILayout.Height(40), GUILayout.Width(100)))
+            {
+                controller.CreateNewNode("aa");
+            }
         }
 
     }
