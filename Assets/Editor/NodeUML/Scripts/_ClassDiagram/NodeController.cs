@@ -76,6 +76,7 @@ namespace NodeUML
             {
                 listNodes = new List<Node>();
             }
+
             if (snapShots == null)
             {
                 snapShots = new List<SnapShot>();
