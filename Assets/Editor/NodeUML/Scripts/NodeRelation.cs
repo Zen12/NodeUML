@@ -43,7 +43,7 @@ namespace NodeUML
             classRelations = new List<ClassRelation>();
         }
 
-        public void DrawRelation(List<Node> nodes)
+        public void DrawRelation(List<Node> nodes, NodeContext context)
         {
             if (nodes == null)
             {
@@ -59,9 +59,13 @@ namespace NodeUML
                     {
                         for (int p = 0; p < nodes[i].listProperty.Count; p++)
                         {
-                            if (classRelations[k].IsRelevantRelation(nodes[i].id, nodes[i].listProperty[p].ID, nodes[j].id))
+                            if (context.IsClassInCurrentContext(nodes[i].id) && context.IsClassInCurrentContext(nodes[j].id))
                             {
-                                DrawNodeCurve(nodes[i].transform, nodes[j].transform, p);
+                                if (classRelations[k].IsRelevantRelation(nodes[i].id, nodes[i].listProperty[p].ID, nodes[j].id))
+                                {
+                                
+                                    DrawNodeCurve(nodes[i].transform, nodes[j].transform, p);
+                                }
                             }
                         }
                     }
@@ -86,7 +90,7 @@ namespace NodeUML
             float offcetStart = 0f;
             float offcetEnd = 1f;
 
-            float heightP1 = 30f + (23f * indexP1);
+            float heightP1 = 70f + (22f * indexP1);
 
             if (start.x < end.x)
             {

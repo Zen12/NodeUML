@@ -29,6 +29,7 @@ namespace NodeUML
             this.id = context.idHandler.GetClassID();
             listProperty = new List<NodeInfoItem>();
             listMethods = new List<NodeInfoItem>();
+            context.currentSnapeShot.AddClass(id);
         }
 
         public void UpdateNodeDependesy(NodeContext context)

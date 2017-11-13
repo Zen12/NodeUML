@@ -9,12 +9,17 @@ namespace NodeUML
     public class NodeController
     {
         [SerializeField]
-        private List<Node> listNodes;
+        public List<Node> listNodes;
         [SerializeField]
         private IdHandler idHandler;
         [SerializeField]
         private NodeRelation nodeRelation;
-        private NodeContext context;
+        [SerializeField]
+        public List<SnapShot> snapShots;
+
+
+        [System.NonSerialized]
+        public NodeContext context;
 
         public NodeController()
         {
@@ -22,6 +27,16 @@ namespace NodeUML
             nodeRelation = new NodeRelation();
             context = new NodeContext(idHandler, nodeRelation.OnMakeRelation, nodeRelation.OnClickOnClass, nodeRelation.OnDeleteField);
             LoadData();
+        }
+
+        public void SetActiveSnapeShot(SnapShot s)
+        {
+            context.currentSnapeShot = s;
+        }
+
+        public SnapShot GetCurrentSnapShot()
+        {
+            return context.currentSnapeShot;
         }
 
         public void SaveData()
@@ -50,6 +65,26 @@ namespace NodeUML
                     listNodes[i].UpdateNodeDependesy(context);
                 }
             }
+
+            if (listNodes == null)
+            {
+                listNodes = new List<Node>();
+            }
+            if (snapShots == null)
+            {
+                snapShots = new List<SnapShot>();
+            }
+
+            if (snapShots.Count == 0)
+            {
+                CreateNewSnapeShot("DEFAULT");
+            }
+
+            if (context.currentSnapeShot == null)
+            {
+                context.currentSnapeShot = snapShots[0];
+            }
+
             #if UML_NODE_DEBUB
             //fill with some data
             if (listNodes == null || listNodes.Count == 0)
@@ -84,18 +119,23 @@ namespace NodeUML
                 };
             }
             #endif
-            if (listNodes == null)
-            {
-                listNodes = new List<Node>();
-            }
+
+        }
+
+        public void CreateNewSnapeShot(string name)
+        {
+            snapShots.Add(new SnapShot(context, name));
         }
 
         public void DrawNodes()
         {
-            nodeRelation.DrawRelation(listNodes);
+            nodeRelation.DrawRelation(listNodes, context);
             for (int i = 0; i < listNodes.Count; i++)
             {
-                listNodes[i].DrawNode();
+                if (context.IsClassInCurrentContext(listNodes[i].id))
+                {
+                    listNodes[i].DrawNode();
+                }
             }
         }
 

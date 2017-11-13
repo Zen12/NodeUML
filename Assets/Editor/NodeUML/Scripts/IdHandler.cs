@@ -9,6 +9,7 @@ namespace NodeUML
     {
         public int maxClassID = 0;
         public ulong nodeInfoID = 1;
+        public int snapShotID = 1;
 
         public int GetClassID()
         {
@@ -18,6 +19,11 @@ namespace NodeUML
         public ulong GetNodeInfoItemID()
         {
             return nodeInfoID++;
+        }
+
+        public int GetSnapShotID()
+        {
+            return snapShotID++;
         }
 
     }
