@@ -23,14 +23,14 @@ namespace NodeUML
         {
             controller = new NodeController();
             classHandler = new ClassHandler(this, controller);
-            useCaseHandler = new UseCaseHandler();
+            useCaseHandler = new UseCaseHandler(this);
         }
 
         void OnGUI()
         {
             BeginWindows();
-            classHandler.Update();
-            //useCaseHandler.Update();
+            //classHandler.Update();
+            useCaseHandler.Update();
             EndWindows();
         }
     }

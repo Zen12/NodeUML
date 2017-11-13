@@ -10,8 +10,7 @@ namespace NodeUML
     {
         [SerializeField]
         public List<Node> listNodes;
-        [SerializeField]
-        private IdHandler idHandler;
+
         [SerializeField]
         private NodeRelation nodeRelation;
         [SerializeField]
@@ -20,10 +19,12 @@ namespace NodeUML
 
         [System.NonSerialized]
         public NodeContext context;
+        [System.NonSerialized]
+        private IdHandler idHandler;
 
         public NodeController()
         {
-            idHandler = new IdHandler();
+            idHandler = IdHandler.GetInstance();
             nodeRelation = new NodeRelation();
             context = new NodeContext(idHandler, nodeRelation.OnMakeRelation, nodeRelation.OnClickOnClass, nodeRelation.OnDeleteField, OnDeleteClass);
             LoadData();
@@ -49,6 +50,7 @@ namespace NodeUML
         {
             string json = JsonUtility.ToJson(this);
             SaveUtility.SaveInProject(json, NodeConsts.FullResourcesFolder + "/" + NodeConsts.CLASS_DATA_FILE);
+            idHandler.OnSaveFile();
             AssetDatabase.Refresh();
         }
 

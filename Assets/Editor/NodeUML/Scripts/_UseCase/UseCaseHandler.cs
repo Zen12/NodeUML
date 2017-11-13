@@ -7,9 +7,11 @@ namespace NodeUML
 {
     public class UseCaseHandler:IHandler
     {
+        private EditorWindow win;
 
-        public UseCaseHandler()
+        public UseCaseHandler(EditorWindow win)
         {
+            this.win = win;
             LoadData();
         }
 
@@ -26,7 +28,14 @@ namespace NodeUML
 
         public void Update()
         {
-                
+            win.BeginWindows();
+            Buttons();
+            win.EndWindows();
+        }
+
+        private void Buttons()
+        {
+            
         }
     }
 }

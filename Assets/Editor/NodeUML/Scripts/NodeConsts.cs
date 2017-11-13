@@ -12,6 +12,7 @@ namespace NodeUML
         public const string ResourcesFolder = "NodeUML";
         public const string CLASS_DATA_FILE = "Clases.json";
         public const string SEQUENCE_DATA_FILE = "Sequences.json";
+        public const string ID_HANDLER = "IdHandler.json";
 
         #endregion
 
@@ -22,6 +23,12 @@ namespace NodeUML
         public const int NodeWith = 130;
         public const int NodeHeight = 200;
         public static readonly Rect NodeTransform = new Rect(NodePosX, NodePosY, NodeWith, NodeHeight);
+
+        #endregion
+
+        #region Resources
+
+        public const string ACTOR_DIR = FullResourcesFolder + "/Res/actor.png";
 
         #endregion
     }
