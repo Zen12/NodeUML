@@ -38,6 +38,11 @@ namespace NodeUML
             RemoveRelation(idClass, idFiled);
         }
 
+        public void DeleteClass(int id)
+        {
+            classRelations.RemoveAll(((ClassRelation obj) => obj.idClass == id && obj.class1.classID == id));
+        }
+
         public NodeRelation()
         {
             classRelations = new List<ClassRelation>();

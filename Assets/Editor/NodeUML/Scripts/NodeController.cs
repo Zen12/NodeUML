@@ -25,13 +25,19 @@ namespace NodeUML
         {
             idHandler = new IdHandler();
             nodeRelation = new NodeRelation();
-            context = new NodeContext(idHandler, nodeRelation.OnMakeRelation, nodeRelation.OnClickOnClass, nodeRelation.OnDeleteField);
+            context = new NodeContext(idHandler, nodeRelation.OnMakeRelation, nodeRelation.OnClickOnClass, nodeRelation.OnDeleteField, OnDeleteClass);
             LoadData();
         }
 
         public void SetActiveSnapeShot(SnapShot s)
         {
             context.currentSnapeShot = s;
+        }
+
+        public void OnDeleteClass(int id)
+        {
+            nodeRelation.DeleteClass(id);
+            listNodes.RemoveAll(((Node obj) => obj.id == id));
         }
 
         public SnapShot GetCurrentSnapShot()

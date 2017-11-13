@@ -60,7 +60,7 @@ namespace NodeUML
 
         public void DrawNode()
         {
-            transform.height = 140 + 22 * (listMethods.Count + listProperty.Count); 
+            transform.height = 160 + 22 * (listMethods.Count + listProperty.Count); 
 
             #if !UML_NODE_DEBUB
             transform = GUI.Window(id, transform, UpdateNode, "Class"); 
@@ -102,6 +102,12 @@ namespace NodeUML
             {
                 listMethods.Add(new NodeInfoItem("", this, context, true));
             }
+
+            if (GUILayout.Button("Delete Class", GUILayout.Width(transform.width - 15)))
+            {
+                DeleteClass();
+            }
+
             GUILayout.EndVertical();
             GUI.DragWindow();
         }
@@ -110,6 +116,23 @@ namespace NodeUML
         {
             listProperty.Remove(info);
             listMethods.Remove(info);
+        }
+
+        public void DeleteClass()
+        {
+            for (int i = 0; i < listProperty.Count; i++)
+            {
+                context.OnDeleteField(id, listProperty[i].ID);
+            }
+
+            for (int i = 0; i < listMethods.Count; i++)
+            {
+                context.OnDeleteField(id, listMethods[i].ID);
+            }
+
+            listProperty.Clear();
+            listMethods.Clear();
+            context.OnDeleteClass(id);
         }
 
         public void AddField(NodeInfoItem n)
