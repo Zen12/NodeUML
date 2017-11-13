@@ -48,7 +48,7 @@ namespace NodeUML
         public void SaveData()
         {
             string json = JsonUtility.ToJson(this);
-            SaveUtility.SaveInProject(json, NodeConsts.FullResourcesFolder + "/" + NodeConsts.NodeDataFile);
+            SaveUtility.SaveInProject(json, NodeConsts.FullResourcesFolder + "/" + NodeConsts.CLASS_DATA_FILE);
             AssetDatabase.Refresh();
         }
 
@@ -61,7 +61,7 @@ namespace NodeUML
         private void LoadData()
         {
             string json = string.Empty;
-            var o = EditorGUIUtility.Load(NodeConsts.ResourcesFolder + "/" + NodeConsts.NodeDataFile);
+            var o = EditorGUIUtility.Load(NodeConsts.ResourcesFolder + "/" + NodeConsts.CLASS_DATA_FILE);
             if (o != null)
             {
                 json = ((TextAsset)o).text;

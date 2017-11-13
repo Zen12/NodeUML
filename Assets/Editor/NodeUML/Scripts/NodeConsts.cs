@@ -10,7 +10,8 @@ namespace NodeUML
 
         public const string FullResourcesFolder = "/Editor Default Resources/" + ResourcesFolder;
         public const string ResourcesFolder = "NodeUML";
-        public const string NodeDataFile = "Nodes.json";
+        public const string CLASS_DATA_FILE = "Clases.json";
+        public const string SEQUENCE_DATA_FILE = "Sequences.json";
 
         #endregion
 

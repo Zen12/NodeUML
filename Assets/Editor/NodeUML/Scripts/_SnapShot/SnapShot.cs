@@ -24,12 +24,15 @@ namespace NodeUML
 
         public void AddClass(int ID)
         {
-            classListID.Add(ID);
+            if (!classListID.Contains(ID))
+            {
+                classListID.Add(ID);
+            }
         }
 
         public void RemoveClass(int ID)
         {
-            classListID.Remove(ID);
+            classListID.RemoveAll((int obj) => obj == ID);
         }
     }
 }
