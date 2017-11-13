@@ -9,6 +9,7 @@ namespace NodeUML
     {
         public ulong ID;
         public string text;
+        public bool isMethod;
 
         [System.NonSerialized]
         private Node node;
@@ -16,11 +17,12 @@ namespace NodeUML
         [System.NonSerialized]
         private NodeContext context;
 
-        public NodeInfoItem(string text, Node node, NodeContext context)
+        public NodeInfoItem(string text, Node node, NodeContext context, bool isMethod)
         {
             this.text = text;
             this.node = node;
             this.context = context;
+            this.isMethod = isMethod;
             ID = context.idHandler.GetNodeInfoItemID();
         }
 
@@ -34,17 +36,30 @@ namespace NodeUML
         {
             GUILayout.BeginHorizontal(GUILayout.Width(node.transform.width - 15));
 
-            if (GUILayout.Button("<", GUILayout.Width(20)))
+            if (!isMethod)
             {
-                context.OnMakeRelation(node.id, ID);
+                if (GUILayout.Button("<", GUILayout.Width(20)))
+                {
+                    context.OnMakeRelation(node.id, ID);
+                }
+                text = GUILayout.TextField(text, GUILayout.Width(node.transform.width - (15 + 20 + 13)));
+                if (GUILayout.Button("X", GUILayout.Width(15)))
+                {
+                    node.DeleteNodeInfo(this);
+                    context.OnDeleteField(node.id, ID);
+                }
+            }
+            else
+            {
+                text = GUILayout.TextField(text, GUILayout.Width(node.transform.width - (25)));
+                if (GUILayout.Button("X", GUILayout.Width(15)))
+                {
+                    node.DeleteNodeInfo(this);
+                    context.OnDeleteField(node.id, ID);
+                }
             }
 
-            text = GUILayout.TextField(text, GUILayout.Width(node.transform.width - (15 + 20 + 13)));
-            if (GUILayout.Button("X", GUILayout.Width(15)))
-            {
-                node.DeleteNodeInfo(this);
-                context.OnDeleteField(node.id, ID);
-            }
+
             GUILayout.EndHorizontal();
         }
 

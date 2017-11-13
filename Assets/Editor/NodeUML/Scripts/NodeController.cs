@@ -84,6 +84,10 @@ namespace NodeUML
                 };
             }
             #endif
+            if (listNodes == null)
+            {
+                listNodes = new List<Node>();
+            }
         }
 
         public void DrawNodes()
@@ -92,6 +96,14 @@ namespace NodeUML
             for (int i = 0; i < listNodes.Count; i++)
             {
                 listNodes[i].DrawNode();
+            }
+        }
+
+        public void UpdateEvent()
+        {
+            for (int i = 0; i < listNodes.Count; i++)
+            {
+                listNodes[i].UpdateEvents();
             }
         }
 

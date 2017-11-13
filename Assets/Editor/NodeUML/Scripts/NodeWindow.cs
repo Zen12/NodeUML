@@ -10,6 +10,7 @@ namespace NodeUML
 
         NodeController controller;
 
+
         [MenuItem("Window/UML Node")]
         private static void ShowView()
         {
@@ -25,13 +26,31 @@ namespace NodeUML
         void OnGUI()
         {
             BeginWindows();
+            UpdateGUI();
+            UpdateInput();
+            EndWindows();
+        }
+
+        private void UpdateGUI()
+        {
             float devider = 5f;
             GUILayout.BeginArea(new Rect(position.width - position.width / devider, 0, position.width / devider, position.height));
             Buttons();
             GUILayout.EndArea();
             //Draw all the Nodes
             controller.DrawNodes();
-            EndWindows();
+        }
+
+        private void UpdateInput()
+        {
+            if (Event.current.clickCount > 0)
+            {
+                //left click
+                if (Event.current.button == 0)
+                {
+                    controller.UpdateEvent();  
+                }
+            }
         }
 
         void Buttons()
@@ -44,7 +63,7 @@ namespace NodeUML
 
             if (GUILayout.Button("New Node", GUILayout.Height(40), GUILayout.Width(100)))
             {
-                controller.CreateNewNode("aa");
+                controller.CreateNewNode("ClassName");
             }
         }
 

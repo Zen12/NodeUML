@@ -13,20 +13,11 @@ namespace NodeUML
         [SerializeField]
         public Rect transform;
 
-        #if UML_NODE_DEBUB
         [SerializeField]
         public List<NodeInfoItem> listProperty;
         [SerializeField]
         public List<NodeInfoItem> listMethods;
 
-        [SerializeField]
-        #else
-        [SerializeField]
-        private List<NodeInfoItem> listProperty;
-        [SerializeField]
-        private List<NodeInfoItem> listMethods;
-        [SerializeField]
-        #endif
         [System.NonSerialized]
         private NodeContext context;
 
@@ -38,7 +29,6 @@ namespace NodeUML
             this.id = context.idHandler.GetClassID();
             listProperty = new List<NodeInfoItem>();
             listMethods = new List<NodeInfoItem>();
-           
         }
 
         public void UpdateNodeDependesy(NodeContext context)
@@ -64,44 +54,44 @@ namespace NodeUML
                     return listProperty[i];
                 }
             }
-
             return null;
         }
 
         public void DrawNode()
         {
+            transform.height = 140 + 22 * (listMethods.Count + listProperty.Count); 
+
             #if !UML_NODE_DEBUB
-            transform = GUI.Window(id, transform, UpdateNode, nodeName); 
+            transform = GUI.Window(id, transform, UpdateNode, "Class"); 
             #else
-            transform = GUI.Window(id, transform, UpdateNode, nodeName + " ID: " + id); 
+            transform = GUI.Window(id, transform, UpdateNode, "Class: " + id); 
             #endif
-            UpdateEvents();
         }
 
-        private void UpdateEvents()
+        public void UpdateEvents()
         {
-            if (Event.current.button == 0)
+            if (transform.Contains(Event.current.mousePosition))
             {
-                if (transform.Contains(Event.current.mousePosition))
-                {
-                    context.OnMakeRelationToClass(id);
-                }
+                context.OnMakeRelationToClass(id);
             }
         }
 
         private void UpdateNode(int id)
         {
             GUILayout.BeginVertical(GUILayout.Width(transform.width - 15));
+            nodeName = GUILayout.TextField(nodeName, GUILayout.Width(transform.width - 15));
+            GUILayout.Label("Property", GUILayout.Width(transform.width - 15));
             for (int i = 0; i < listProperty.Count; i++)
             {
                 listProperty[i].Draw();
             }
 
-            if (GUILayout.Button("New Property", GUILayout.Width(transform.width - 15)))
+            if (GUILayout.Button("New Properties", GUILayout.Width(transform.width - 15)))
             {
-                listProperty.Add(new NodeInfoItem("", this, context));
+                listProperty.Add(new NodeInfoItem("", this, context, false));
             }
             GUILayout.Space(10);
+            GUILayout.Label("Methods", GUILayout.Width(transform.width - 15));
             for (int i = 0; i < listMethods.Count; i++)
             {
                 listMethods[i].Draw();
@@ -109,7 +99,7 @@ namespace NodeUML
 
             if (GUILayout.Button("New Method", GUILayout.Width(transform.width - 15)))
             {
-                listMethods.Add(new NodeInfoItem("", this, context));
+                listMethods.Add(new NodeInfoItem("", this, context, true));
             }
             GUILayout.EndVertical();
             GUI.DragWindow();
