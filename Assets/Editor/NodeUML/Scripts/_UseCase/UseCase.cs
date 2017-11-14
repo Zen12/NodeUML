@@ -10,19 +10,32 @@ namespace NodeUML
     {
 
         public int ID;
-        private Rect transform;
+        [SerializeField]
+        public Rect transform;
+        [SerializeField]
         private string useCaseName = "UseCaseName";
+        private System.Action<int> OnFinishRelation;
 
-        public UseCase()
+        public UseCase(IdHandler idHander, System.Action<int> OnFinishRelation)
         {
-            ID = 21;
+            ID = idHander.GetUseCaseID();
             transform = new Rect(20, 20, 100, 120);
+            this.OnFinishRelation = OnFinishRelation;
         }
 
         public void Draw()
         {
             GUI.color = Color.white;
             transform = GUI.Window(ID, transform, UpdateDraw, "Use Case"); 
+            UpdateEvents();
+        }
+
+        public void UpdateEvents()
+        {
+            if (transform.Contains(Event.current.mousePosition))
+            {
+                OnFinishRelation(ID);
+            }
         }
 
         public void UpdateDraw(int id)

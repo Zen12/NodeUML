@@ -12,6 +12,7 @@ namespace NodeUML
         public const string ResourcesFolder = "NodeUML";
         public const string CLASS_DATA_FILE = "Clases.json";
         public const string SEQUENCE_DATA_FILE = "Sequences.json";
+        public const string USECASE_DATA_FILE = "Sequences.json";
         public const string ID_HANDLER = "IdHandler.json";
 
         #endregion

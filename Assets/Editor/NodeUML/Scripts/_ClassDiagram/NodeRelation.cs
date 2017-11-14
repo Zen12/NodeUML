@@ -12,6 +12,10 @@ namespace NodeUML
         private List<ClassRelation> classRelations;
         private RelationState relationState = new RelationState();
 
+        public NodeRelation()
+        {
+            classRelations = new List<ClassRelation>();
+        }
 
         public void OnMakeRelation(int idClass, ulong idField)
         {
@@ -43,11 +47,6 @@ namespace NodeUML
             classRelations.RemoveAll(((ClassRelation obj) => obj.idClass == id && obj.class1.classID == id));
         }
 
-        public NodeRelation()
-        {
-            classRelations = new List<ClassRelation>();
-        }
-
         public void DrawRelation(List<Node> nodes, NodeContext context)
         {
             if (nodes == null)
@@ -68,8 +67,7 @@ namespace NodeUML
                             {
                                 if (classRelations[k].IsRelevantRelation(nodes[i].id, nodes[i].listProperty[p].ID, nodes[j].id))
                                 {
-                                
-                                    DrawNodeCurve(nodes[i].transform, nodes[j].transform, p);
+                                    DrawUtils.DrawNodeCurve(nodes[i].transform, nodes[j].transform, p);
                                 }
                             }
                         }
@@ -87,29 +85,6 @@ namespace NodeUML
         private void RemoveRelation(int classID, ulong fieldID)
         {
             classRelations.RemoveAll((ClassRelation o) => o.class1.classID == classID && o.class1.fieldID == fieldID);
-        }
-
-        private void DrawNodeCurve(Rect start, Rect end, int indexP1)
-        {
-            float direction = -1f;
-            float offcetStart = 0f;
-            float offcetEnd = 1f;
-
-            float heightP1 = 70f + (22f * indexP1);
-
-            if (start.x < end.x)
-            {
-                direction = 1f;
-                offcetStart = 1f;
-                offcetEnd = 0f;
-            }
-
-            Vector3 startPos = new Vector3(start.x + start.width * offcetStart, start.y + heightP1, 0);
-            Vector3 endPos = new Vector3(end.x + end.width * offcetEnd, end.y + 10f, 0);
-
-            Vector3 startTan = startPos + Vector3.right * 50 * direction;
-            Vector3 endTan = endPos + Vector3.left * 50 * direction;
-            Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.black, null, 2);
         }
     }
 

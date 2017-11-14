@@ -8,9 +8,10 @@ namespace NodeUML
     [System.Serializable]
     public class IdHandler
     {
-        public int maxClassID = 0;
         public ulong nodeInfoID = 1;
         public int snapShotID = 1;
+
+        public int windowID = 0;
 
         private static IdHandler instance;
 
@@ -50,10 +51,9 @@ namespace NodeUML
             }
         }
 
-
         public int GetClassID()
         {
-            return maxClassID++;
+            return windowID++;
         }
 
         public ulong GetNodeInfoItemID()
@@ -66,5 +66,14 @@ namespace NodeUML
             return snapShotID++;
         }
 
+        public int GetUseCaseID()
+        {
+            return windowID++;
+        }
+
+        public int GetActorID()
+        {
+            return windowID++;
+        }
     }
 }

@@ -10,6 +10,8 @@ namespace NodeUML
         private NodeController controller;
 
         private ClassHandler classHandler;
+
+        [SerializeField]
         private UseCaseHandler useCaseHandler;
 
         [MenuItem("Window/UML Node")]
