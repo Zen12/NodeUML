@@ -67,7 +67,7 @@ namespace NodeUML
                             {
                                 if (classRelations[k].IsRelevantRelation(nodes[i].id, nodes[i].listProperty[p].ID, nodes[j].id))
                                 {
-                                    DrawUtils.DrawNodeCurve(nodes[i].transform, nodes[j].transform, p);
+                                    DrawUtils.DrawNodeCurve(nodes[i].transform, nodes[j].transform, p, 70);
                                 }
                             }
                         }

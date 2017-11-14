@@ -5,13 +5,13 @@ using UnityEditor;
 
 public static class DrawUtils
 {
-    public static void DrawNodeCurve(Rect start, Rect end, int indexP1)
+    public static void DrawNodeCurve(Rect start, Rect end, int indexP1, float startOffset)
     {
         float direction = -1f;
         float offcetStart = 0f;
         float offcetEnd = 1f;
 
-        float heightP1 = 70f + (22f * indexP1);
+        float heightP1 = startOffset + (22f * indexP1);
 
         if (start.x < end.x)
         {

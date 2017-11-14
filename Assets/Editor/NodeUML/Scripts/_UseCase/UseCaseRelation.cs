@@ -28,7 +28,7 @@ namespace NodeUML
                     {
                         if (listOfRelation[i].IsRelation(actors[j].ID, useCases[k].ID))
                         {
-                            DrawUtils.DrawNodeCurve(actors[j].transform, useCases[k].transform, 0);
+                            DrawUtils.DrawNodeCurve(actors[j].transform, useCases[k].transform, 0, 30);
                         }
                     }
                 }
@@ -51,6 +51,7 @@ namespace NodeUML
             if (relationState.isMakingRelationState)
             {
                 relationState.isMakingRelationState = false;
+                relationState.selectedUseCase = idUseCase;
                 MakeRelation(relationState.selectedActor, relationState.selectedUseCase);
             }
         }
