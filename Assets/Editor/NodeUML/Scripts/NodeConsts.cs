@@ -28,7 +28,7 @@ namespace NodeUML
 
         #region Resources
 
-        public const string ACTOR_DIR = FullResourcesFolder + "/Res/actor.png";
+        public const string RESOURCE_CONFIG = ResourcesFolder + "/ResourceConfig.asset";
 
         #endregion
     }
