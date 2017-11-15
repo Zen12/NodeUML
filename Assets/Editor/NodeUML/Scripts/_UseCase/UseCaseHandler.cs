@@ -37,11 +37,25 @@ namespace NodeUML
             {
                 json = ((TextAsset)o).text;
                 JsonUtility.FromJsonOverwrite(json, this);
+                UpdateDeppendecy();
             }
             else
             {
                 CreateUseCase("UseCase");
                 CreateActor("Actor name");
+            }
+        }
+
+        private void UpdateDeppendecy()
+        {
+            for (int i = 0; i < actors.Count; i++)
+            {
+                actors[i].UpdateDeppendecy(useCaseRelation.OnMakeStartRelation);
+            }
+
+            for (int i = 0; i < listOfUseCase.Count; i++)
+            {
+                listOfUseCase[i].UpdateDeppendecy(useCaseRelation.OnSelectUseCase);
             }
         }
 

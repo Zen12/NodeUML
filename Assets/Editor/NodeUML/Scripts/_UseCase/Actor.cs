@@ -24,6 +24,11 @@ namespace NodeUML
             this.OnMakeRelation = OnMakeRelation;
         }
 
+        public void UpdateDeppendecy(System.Action<int> OnMakeRelation)
+        {
+            this.OnMakeRelation = OnMakeRelation;
+        }
+
         public void Draw()
         {
             GUI.color = Color.white;

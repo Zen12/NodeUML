@@ -22,6 +22,11 @@ namespace NodeUML
             this.OnFinishRelation = OnFinishRelation;
         }
 
+        public void UpdateDeppendecy(System.Action<int> OnFinishRelation)
+        {
+            this.OnFinishRelation = OnFinishRelation;
+        }
+
         public void Draw()
         {
             GUI.color = Color.white;
