@@ -31,8 +31,8 @@ namespace NodeUML
         void OnGUI()
         {
             BeginWindows();
-            //classHandler.Update();
-            useCaseHandler.Update();
+            classHandler.Update();
+            //useCaseHandler.Update();
             EndWindows();
         }
     }
