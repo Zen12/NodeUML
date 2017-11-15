@@ -8,7 +8,6 @@ namespace NodeUML
     [System.Serializable]
     public class UseCase
     {
-
         public int ID;
         [SerializeField]
         public Rect transform;

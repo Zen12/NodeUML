@@ -16,6 +16,8 @@ namespace NodeUML
         public List<Actor> actors;
         [SerializeField]
         public UseCaseRelation useCaseRelation;
+        [SerializeField]
+        public List<SnapShotUseCase> snapShotUseCase;
 
         public UseCaseHandler(EditorWindow win)
         {
@@ -23,6 +25,7 @@ namespace NodeUML
             listOfUseCase = new List<UseCase>();
             actors = new List<Actor>();
             useCaseRelation = new UseCaseRelation();
+            snapShotUseCase = new List<SnapShotUseCase>();
             LoadData();
         }
 
@@ -37,10 +40,8 @@ namespace NodeUML
             }
             else
             {
-                UseCase c = new UseCase(IdHandler.GetInstance(), useCaseRelation.OnSelectUseCase);
-                listOfUseCase.Add(c);
-                Actor a = new Actor("Actor name", IdHandler.GetInstance(), useCaseRelation.OnMakeStartRelation);
-                actors.Add(a);
+                CreateUseCase("UseCase");
+                CreateActor("Actor name");
             }
         }
 
@@ -84,6 +85,27 @@ namespace NodeUML
                 Save();
                 Debug.Log("Data saved");
             }
+            if (GUILayout.Button("Create actor", GUILayout.Height(40), GUILayout.Width(100)))
+            {
+                CreateActor("Actor Name");
+            }
+
+            if (GUILayout.Button("Create use-case", GUILayout.Height(40), GUILayout.Width(100)))
+            {
+                CreateUseCase("Use case name");
+            }
+        }
+
+        private void CreateActor(string name)
+        {
+            Actor a = new Actor(name, IdHandler.GetInstance(), useCaseRelation.OnMakeStartRelation);
+            actors.Add(a);
+        }
+
+        private void CreateUseCase(string name)
+        {
+            UseCase c = new UseCase(IdHandler.GetInstance(), useCaseRelation.OnSelectUseCase);
+            listOfUseCase.Add(c);
         }
     }
 }
