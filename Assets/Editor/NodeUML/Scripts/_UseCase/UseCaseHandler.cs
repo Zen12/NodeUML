@@ -53,6 +53,7 @@ namespace NodeUML
                 actors[i].UpdateDeppendecy(useCaseRelation.OnMakeStartRelation);
             }
 
+
             for (int i = 0; i < listOfUseCase.Count; i++)
             {
                 listOfUseCase[i].UpdateDeppendecy(useCaseRelation.OnSelectUseCase);
