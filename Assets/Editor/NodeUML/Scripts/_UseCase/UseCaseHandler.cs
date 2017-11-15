@@ -19,6 +19,8 @@ namespace NodeUML
         [SerializeField]
         public List<SnapShotUseCase> snapShotUseCase;
 
+        private SnapShotUseCase currentHandler;
+
         public UseCaseHandler(EditorWindow win)
         {
             this.win = win;
@@ -27,6 +29,12 @@ namespace NodeUML
             useCaseRelation = new UseCaseRelation();
             snapShotUseCase = new List<SnapShotUseCase>();
             LoadData();
+            if (snapShotUseCase.Count == 0)
+            {
+                SnapShotUseCase s = new SnapShotUseCase("DEFAULT");
+                snapShotUseCase.Add(s);
+            }
+            currentHandler = snapShotUseCase[0];
         }
 
         private void LoadData()
@@ -58,6 +66,7 @@ namespace NodeUML
             {
                 listOfUseCase[i].UpdateDeppendecy(useCaseRelation.OnSelectUseCase);
             }
+
         }
 
         public void Save()
@@ -109,6 +118,47 @@ namespace NodeUML
             {
                 CreateUseCase("Use case name");
             }
+
+            GUILayout.Label("List of SnapShots");
+
+            for (int i = 0; i < snapShotUseCase.Count; i++)
+            {
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("<-", GUILayout.Width(30)))
+                {
+                    Debug.Log("a");
+                }
+
+                snapShotUseCase[i].snapShotName = GUILayout.TextField(snapShotUseCase[i].snapShotName);
+
+                if (GUILayout.Button("X"))
+                {
+                    Debug.Log("a");
+                }
+
+                GUILayout.EndHorizontal();
+            }
+
+            GUILayout.Label("List of Actors");
+
+            for (int i = 0; i < actors.Count; i++)
+            {
+                if (GUILayout.Button(actors[i].actorName))
+                {
+                    Debug.Log("a");
+                }
+            }
+
+            GUILayout.Label("List of Actors");
+
+            for (int i = 0; i < listOfUseCase.Count; i++)
+            {
+                if (GUILayout.Button(listOfUseCase[i].useCaseName))
+                {
+                    Debug.Log("a");
+                }
+            }
+
         }
 
         private void CreateActor(string name)

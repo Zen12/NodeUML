@@ -9,30 +9,42 @@ namespace NodeUML
     {
         public int ID;
         [SerializeField]
-        public List<int> classListID;
+        public List<int> actorID;
+        public List<int> useCaseID;
         public string snapShotName;
 
-        private NodeContext context;
 
         public SnapShotUseCase(string name)
         {
-            this.context = context;
-            ID = context.idHandler.GetSnapShotID();
-            classListID = new List<int>();
+            ID = IdHandler.GetInstance().GetSnapShotID();
+            actorID = new List<int>();
             this.snapShotName = name;
         }
 
-        public void AddClass(int ID)
+        public void AddActor(int ID)
         {
-            if (!classListID.Contains(ID))
+            if (!actorID.Contains(ID))
             {
-                classListID.Add(ID);
+                actorID.Add(ID);
             }
         }
 
-        public void RemoveClass(int ID)
+        public void RemoveActor(int ID)
         {
-            classListID.RemoveAll((int obj) => obj == ID);
+            actorID.RemoveAll((int obj) => obj == ID);
+        }
+
+        public void AddUseCase(int ID)
+        {
+            if (!useCaseID.Contains(ID))
+            {
+                useCaseID.Add(ID);
+            }
+        }
+
+        public void RemoveUseCase(int ID)
+        {
+            useCaseID.RemoveAll((int obj) => obj == ID);
         }
     }
 }

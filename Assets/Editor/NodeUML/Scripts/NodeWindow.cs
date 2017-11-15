@@ -10,8 +10,6 @@ namespace NodeUML
         private NodeController controller;
 
         private ClassHandler classHandler;
-
-        [SerializeField]
         private UseCaseHandler useCaseHandler;
 
         [MenuItem("Window/UML Node")]
@@ -31,7 +29,7 @@ namespace NodeUML
         void OnGUI()
         {
             BeginWindows();
-            //classHandler.Update();
+            // classHandler.Update();
             useCaseHandler.Update();
             EndWindows();
         }

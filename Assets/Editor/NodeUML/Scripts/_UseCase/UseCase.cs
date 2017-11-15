@@ -12,7 +12,7 @@ namespace NodeUML
         [SerializeField]
         public Rect transform;
         [SerializeField]
-        private string useCaseName = "UseCaseName";
+        public string useCaseName = "UseCaseName";
         private System.Action<int> OnFinishRelation;
 
         public UseCase(IdHandler idHander, System.Action<int> OnFinishRelation)
