@@ -18,6 +18,7 @@ namespace NodeUML
         {
             ID = IdHandler.GetInstance().GetSnapShotID();
             actorID = new List<int>();
+            useCaseID = new List<int>();
             this.snapShotName = name;
         }
 

@@ -18,13 +18,23 @@ namespace NodeUML
             relationState = new RelationStateUseCase();
         }
 
-        public void Draw(List<Actor> actors, List<UseCase> useCases)
+        public void Draw(List<Actor> actors, List<UseCase> useCases, SnapShotUseCase currentSnapShot)
         {
             for (int j = 0; j < actors.Count; j++)
             {
+                if (!currentSnapShot.actorID.Contains(actors[j].ID))
+                {
+                    continue;
+                }
+
                 int useCasePos = 0;
                 for (int k = 0; k < useCases.Count; k++)
                 {
+                    if (!currentSnapShot.useCaseID.Contains(useCases[k].ID))
+                    {
+                        continue;
+                    }
+
                     for (int i = 0; i < listOfRelation.Count; i++)
                     {
                         if (listOfRelation[i].IsRelation(actors[j].ID, useCases[k].ID))

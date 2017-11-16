@@ -19,22 +19,28 @@ namespace NodeUML
         [SerializeField]
         public List<SnapShotUseCase> snapShotUseCase;
 
-        private SnapShotUseCase currentHandler;
+        private SnapShotUseCase currentSnapShopt;
 
         public UseCaseHandler(EditorWindow win)
         {
-            this.win = win;
+            snapShotUseCase = new List<SnapShotUseCase>();
+            SetSnapShot();
             listOfUseCase = new List<UseCase>();
             actors = new List<Actor>();
             useCaseRelation = new UseCaseRelation();
-            snapShotUseCase = new List<SnapShotUseCase>();
+
+            this.win = win;
             LoadData();
+        }
+
+        private void SetSnapShot()
+        {
             if (snapShotUseCase.Count == 0)
             {
                 SnapShotUseCase s = new SnapShotUseCase("DEFAULT");
                 snapShotUseCase.Add(s);
             }
-            currentHandler = snapShotUseCase[0];
+            currentSnapShopt = snapShotUseCase[0];
         }
 
         private void LoadData()
@@ -52,6 +58,7 @@ namespace NodeUML
                 CreateUseCase("UseCase");
                 CreateActor("Actor name");
             }
+            SetSnapShot();
         }
 
         private void UpdateDeppendecy()
@@ -101,15 +108,21 @@ namespace NodeUML
         {
             for (int i = 0; i < listOfUseCase.Count; i++)
             {
-                listOfUseCase[i].Draw();
+                if (currentSnapShopt.useCaseID.Contains(listOfUseCase[i].ID))
+                {
+                    listOfUseCase[i].Draw();
+                }
             }
 
             for (int i = 0; i < actors.Count; i++)
             {
-                actors[i].Draw();
+                if (currentSnapShopt.actorID.Contains(actors[i].ID))
+                {
+                    actors[i].Draw();
+                }
             }
 
-            useCaseRelation.Draw(actors, listOfUseCase);
+            useCaseRelation.Draw(actors, listOfUseCase, currentSnapShopt);
         }
 
         private void Buttons()
@@ -119,31 +132,44 @@ namespace NodeUML
                 Save();
                 Debug.Log("Data saved");
             }
-            if (GUILayout.Button("Create actor", GUILayout.Height(40), GUILayout.Width(100)))
-            {
-                CreateActor("Actor Name");
-            }
 
-            if (GUILayout.Button("Create use-case", GUILayout.Height(40), GUILayout.Width(100)))
-            {
-                CreateUseCase("Use case name");
-            }
+
+
 
             GUILayout.Label("List of SnapShots");
+
+            if (GUILayout.Button("Add new SnapShop"))
+            {
+                SnapShotUseCase s = new SnapShotUseCase("New snap shot");
+                currentSnapShopt = s;
+                snapShotUseCase.Add(s);
+            }
 
             for (int i = 0; i < snapShotUseCase.Count; i++)
             {
                 GUILayout.BeginHorizontal();
+
+                if (currentSnapShopt == snapShotUseCase[i])
+                {
+                    GUI.color = Color.green;
+                }
+
                 if (GUILayout.Button("<-", GUILayout.Width(30)))
                 {
-                    Debug.Log("a");
+                    currentSnapShopt = snapShotUseCase[i];
                 }
+
+                GUI.color = Color.white;
 
                 snapShotUseCase[i].snapShotName = GUILayout.TextField(snapShotUseCase[i].snapShotName);
 
                 if (GUILayout.Button("X"))
                 {
-                    Debug.Log("a");
+                    snapShotUseCase.RemoveAll((SnapShotUseCase obj) => obj.ID == snapShotUseCase[i].ID);
+                    if (snapShotUseCase.Count > 0)
+                    {
+                        currentSnapShopt = snapShotUseCase[0];
+                    }
                 }
 
                 GUILayout.EndHorizontal();
@@ -151,22 +177,62 @@ namespace NodeUML
 
             GUILayout.Label("List of Actors");
 
+            if (GUILayout.Button("Create actor"))
+            {
+                CreateActor("Actor Name");
+            }
+
+            GUILayout.Space(10);
+
             for (int i = 0; i < actors.Count; i++)
             {
+                if (currentSnapShopt.actorID.Contains(actors[i].ID))
+                {
+                    GUI.color = Color.green;
+                }
+
                 if (GUILayout.Button(actors[i].actorName))
                 {
-                    Debug.Log("a");
+                    if (!currentSnapShopt.actorID.Contains(actors[i].ID))
+                    {
+                        currentSnapShopt.AddActor(actors[i].ID);
+                    }
+                    else
+                    {
+                        currentSnapShopt.RemoveActor(actors[i].ID);
+                    }
                 }
+                GUI.color = Color.white;
             }
 
             GUILayout.Label("List of Actors");
 
+            if (GUILayout.Button("Create use-case"))
+            {
+                CreateUseCase("Use case name");
+            }
+
+            GUILayout.Space(10);
+
             for (int i = 0; i < listOfUseCase.Count; i++)
             {
+                if (currentSnapShopt.useCaseID.Contains(listOfUseCase[i].ID))
+                {
+                    GUI.color = Color.green;
+                }
                 if (GUILayout.Button(listOfUseCase[i].useCaseName))
                 {
-                    Debug.Log("a");
+                    if (!currentSnapShopt.useCaseID.Contains(listOfUseCase[i].ID))
+                    {
+                        currentSnapShopt.AddUseCase(listOfUseCase[i].ID);
+                    }
+                    else
+                    {
+                        currentSnapShopt.RemoveUseCase(listOfUseCase[i].ID);
+                    }
                 }
+
+                GUI.color = Color.white;
             }
 
         }
@@ -175,12 +241,14 @@ namespace NodeUML
         {
             Actor a = new Actor(name, IdHandler.GetInstance(), useCaseRelation.OnMakeStartRelation, DeleteActor);
             actors.Add(a);
+            currentSnapShopt.AddActor(a.ID);
         }
 
         private void CreateUseCase(string name)
         {
             UseCase c = new UseCase(IdHandler.GetInstance(), useCaseRelation.OnSelectUseCase, DeleteUseCase);
             listOfUseCase.Add(c);
+            currentSnapShopt.AddUseCase(c.ID);
         }
     }
 }
