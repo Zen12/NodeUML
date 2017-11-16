@@ -27,6 +27,7 @@ namespace NodeUML
         public void UpdateDeppendecy(System.Action<int> OnMakeRelation)
         {
             this.OnMakeRelation = OnMakeRelation;
+            img = ResourcesConfig.GetInstance().actor;
         }
 
         public void Draw()
@@ -37,10 +38,6 @@ namespace NodeUML
 
         public void UpdateDraw(int id)
         {
-            if (img == null)
-            {
-                img = ResourcesConfig.GetInstance().actor;
-            }
             GUILayout.BeginHorizontal();
             GUILayout.Box(img, GUILayout.Width(transform.width - 30), GUILayout.Height(transform.height - 50));
             if (GUILayout.Button(">"))

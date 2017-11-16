@@ -40,7 +40,7 @@ namespace NodeUML
         private void LoadData()
         {
             string json = string.Empty;
-            var o = EditorGUIUtility.Load(NodeConsts.ResourcesFolder + "/" + NodeConsts.SEQUENCE_DATA_FILE);
+            var o = EditorGUIUtility.Load(NodeConsts.ResourcesFolder + "/" + NodeConsts.USECASE_DATA_FILE);
             if (o != null)
             {
                 json = ((TextAsset)o).text;
@@ -80,7 +80,6 @@ namespace NodeUML
         public void Update()
         {
             DrawElements();
-
             float devider = 5f;
             GUILayout.BeginArea(new Rect(win.position.width - win.position.width / devider, 0, win.position.width / devider, win.position.height));
             Buttons();

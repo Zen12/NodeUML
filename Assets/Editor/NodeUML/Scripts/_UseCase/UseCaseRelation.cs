@@ -20,15 +20,20 @@ namespace NodeUML
 
         public void Draw(List<Actor> actors, List<UseCase> useCases)
         {
-            for (int i = 0; i < listOfRelation.Count; i++)
+            for (int j = 0; j < actors.Count; j++)
             {
-                for (int j = 0; j < actors.Count; j++)
+                int useCasePos = 0;
+                for (int k = 0; k < useCases.Count; k++)
                 {
-                    for (int k = 0; k < useCases.Count; k++)
+                    for (int i = 0; i < listOfRelation.Count; i++)
                     {
                         if (listOfRelation[i].IsRelation(actors[j].ID, useCases[k].ID))
                         {
-                            DrawUtils.DrawNodeCurve(actors[j].transform, useCases[k].transform, 0, 30);
+                            DrawUtils.DrawNodeCurveWithButton(actors[j].transform, useCases[k].transform, useCasePos, 30, delegate
+                                {
+                                    listOfRelation.Remove(listOfRelation[i]);
+                                });
+                            useCasePos++;
                         }
                     }
                 }
