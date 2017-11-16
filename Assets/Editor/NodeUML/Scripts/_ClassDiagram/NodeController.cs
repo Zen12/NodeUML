@@ -10,13 +10,10 @@ namespace NodeUML
     {
         [SerializeField]
         public List<Node> listNodes;
-
         [SerializeField]
         private NodeRelation nodeRelation;
         [SerializeField]
         public List<SnapShot> snapShots;
-
-
         [System.NonSerialized]
         public NodeContext context;
         [System.NonSerialized]

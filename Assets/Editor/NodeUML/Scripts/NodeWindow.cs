@@ -11,6 +11,7 @@ namespace NodeUML
 
         private ClassHandler classHandler;
         private UseCaseHandler useCaseHandler;
+        private SequenceHandler sequanceHander;
 
         [MenuItem("Window/UML Node")]
         private static void ShowView()
@@ -24,13 +25,15 @@ namespace NodeUML
             controller = new NodeController();
             classHandler = new ClassHandler(this, controller);
             useCaseHandler = new UseCaseHandler(this);
+            sequanceHander = new SequenceHandler(this, IdHandler.GetInstance(), controller.listNodes, useCaseHandler.actors, useCaseHandler.listOfUseCase);
         }
 
         void OnGUI()
         {
             BeginWindows();
             // classHandler.Update();
-            useCaseHandler.Update();
+            // useCaseHandler.Update();
+            sequanceHander.Update();
             EndWindows();
         }
     }
