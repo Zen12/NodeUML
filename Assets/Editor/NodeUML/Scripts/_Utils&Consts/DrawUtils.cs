@@ -34,9 +34,17 @@ public static class DrawUtils
 
     public static void DrawNodeCurveWithButton(Rect start, Rect end, int indexP1, float startOffset, System.Action deleteCallBack)
     {
+        float direction = 0f;
+        float offset = -15f;
+        if (start.x < end.x)
+        {
+            direction = 1f;
+            offset = 0f;
+        }
+
         DrawNodeCurve(start, end, indexP1, startOffset);
         float heightP1 = startOffset + (heightLenghtOffset * indexP1);
-        if (GUI.Button(new Rect(start.x + start.width, start.y + heightP1 - 12, 15, 15), "X"))
+        if (GUI.Button(new Rect((start.x + (start.width * direction) + offset), start.y + heightP1 - 10, 15, 15), "X"))
         {
             deleteCallBack();
         }

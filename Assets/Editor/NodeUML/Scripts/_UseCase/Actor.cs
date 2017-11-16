@@ -14,19 +14,22 @@ namespace NodeUML
         public Rect transform;
         private Texture img;
         private System.Action<int> OnMakeRelation;
+        private System.Action<int> OnDeleteActor;
 
-        public Actor(string actorName, IdHandler idhadler, System.Action<int> OnMakeRelation)
+        public Actor(string actorName, IdHandler idhadler, System.Action<int> OnMakeRelation, System.Action<int> OnDeleteActor)
         {
             this.actorName = actorName;
             ID = idhadler.GetActorID();
-            transform = new Rect(20, 20, 100, 120);
+            transform = new Rect(20, 20, 120, 140);
             img = ResourcesConfig.GetInstance().actor;
             this.OnMakeRelation = OnMakeRelation;
+            this.OnDeleteActor = OnDeleteActor;
         }
 
-        public void UpdateDeppendecy(System.Action<int> OnMakeRelation)
+        public void UpdateDeppendecy(System.Action<int> OnMakeRelation, System.Action<int> OnDeleteActor)
         {
             this.OnMakeRelation = OnMakeRelation;
+            this.OnDeleteActor = OnDeleteActor;
             img = ResourcesConfig.GetInstance().actor;
         }
 
@@ -38,14 +41,18 @@ namespace NodeUML
 
         public void UpdateDraw(int id)
         {
+            GUILayout.Box(img, GUILayout.Width(transform.width - 30), GUILayout.Height(transform.height - 70));
             GUILayout.BeginHorizontal();
-            GUILayout.Box(img, GUILayout.Width(transform.width - 30), GUILayout.Height(transform.height - 50));
+            actorName = GUILayout.TextField(actorName, GUILayout.Width(transform.width - 40));
             if (GUILayout.Button(">"))
             {
                 OnMakeRelation(ID);
             }
             GUILayout.EndVertical();
-            actorName = GUILayout.TextField(actorName, GUILayout.Width(transform.width - 15));
+            if (GUILayout.Button("Delete"))
+            {
+                OnDeleteActor(ID);
+            }
             GUI.DragWindow();
         }
     }

@@ -14,17 +14,20 @@ namespace NodeUML
         [SerializeField]
         public string useCaseName = "UseCaseName";
         private System.Action<int> OnFinishRelation;
+        private System.Action<int> OnDeleteUseCase;
 
-        public UseCase(IdHandler idHander, System.Action<int> OnFinishRelation)
+        public UseCase(IdHandler idHander, System.Action<int> OnFinishRelation, System.Action<int> OnDeleteUseCase)
         {
             ID = idHander.GetUseCaseID();
-            transform = new Rect(20, 20, 100, 120);
+            transform = new Rect(20, 20, 150, 80);
             this.OnFinishRelation = OnFinishRelation;
+            this.OnDeleteUseCase = OnDeleteUseCase;
         }
 
-        public void UpdateDeppendecy(System.Action<int> OnFinishRelation)
+        public void UpdateDeppendecy(System.Action<int> OnFinishRelation, System.Action<int> OnDeleteUseCase)
         {
             this.OnFinishRelation = OnFinishRelation;
+            this.OnDeleteUseCase = OnDeleteUseCase;
         }
 
         public void Draw()
@@ -44,7 +47,11 @@ namespace NodeUML
 
         public void UpdateDraw(int id)
         {
-            useCaseName = GUILayout.TextArea(useCaseName, GUILayout.Width(transform.width - 15), GUILayout.Height(transform.height - 40));
+            useCaseName = GUILayout.TextArea(useCaseName, GUILayout.Width(transform.width - 15), GUILayout.Height(transform.height - 50));
+            if (GUILayout.Button("Delete"))
+            {
+                OnDeleteUseCase(ID);
+            }
             GUI.DragWindow();
         }
     }

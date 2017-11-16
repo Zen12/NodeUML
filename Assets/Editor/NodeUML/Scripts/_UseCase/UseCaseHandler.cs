@@ -58,15 +58,26 @@ namespace NodeUML
         {
             for (int i = 0; i < actors.Count; i++)
             {
-                actors[i].UpdateDeppendecy(useCaseRelation.OnMakeStartRelation);
+                actors[i].UpdateDeppendecy(useCaseRelation.OnMakeStartRelation, DeleteActor);
             }
-
 
             for (int i = 0; i < listOfUseCase.Count; i++)
             {
-                listOfUseCase[i].UpdateDeppendecy(useCaseRelation.OnSelectUseCase);
+                listOfUseCase[i].UpdateDeppendecy(useCaseRelation.OnSelectUseCase, DeleteUseCase);
             }
 
+        }
+
+        public void DeleteActor(int id)
+        {
+            actors.RemoveAll((Actor obj) => obj.ID == id);
+            useCaseRelation.OnDeleteActor(id);
+        }
+
+        public void DeleteUseCase(int id)
+        {
+            listOfUseCase.RemoveAll((UseCase obj) => obj.ID == id);
+            useCaseRelation.OnDeleteUseCase(id);
         }
 
         public void Save()
@@ -162,13 +173,13 @@ namespace NodeUML
 
         private void CreateActor(string name)
         {
-            Actor a = new Actor(name, IdHandler.GetInstance(), useCaseRelation.OnMakeStartRelation);
+            Actor a = new Actor(name, IdHandler.GetInstance(), useCaseRelation.OnMakeStartRelation, DeleteActor);
             actors.Add(a);
         }
 
         private void CreateUseCase(string name)
         {
-            UseCase c = new UseCase(IdHandler.GetInstance(), useCaseRelation.OnSelectUseCase);
+            UseCase c = new UseCase(IdHandler.GetInstance(), useCaseRelation.OnSelectUseCase, DeleteUseCase);
             listOfUseCase.Add(c);
         }
     }

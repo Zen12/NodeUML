@@ -51,6 +51,16 @@ namespace NodeUML
             relationState.selectedActor = idActors;
         }
 
+        public void OnDeleteUseCase(int id)
+        {
+            listOfRelation.RemoveAll((Relation obj) => obj.useCaseID == id);
+        }
+
+        public void OnDeleteActor(int id)
+        {
+            listOfRelation.RemoveAll((Relation obj) => obj.actorID == id);
+        }
+
         public void OnSelectUseCase(int idUseCase)
         {
             if (relationState.isMakingRelationState)
