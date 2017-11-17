@@ -10,6 +10,7 @@ namespace NodeUML
     {
         public ulong nodeInfoID = 1;
         public int snapShotID = 1;
+        public int sequenceID = 1;
 
         public int windowID = 0;
 
@@ -74,6 +75,11 @@ namespace NodeUML
         public int GetActorID()
         {
             return windowID++;
+        }
+
+        public int GetSequenceID()
+        {
+            return sequenceID++;
         }
     }
 }

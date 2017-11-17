@@ -17,7 +17,7 @@ namespace NodeUML
         private List<Actor> actors;
         [System.NonSerialized]
         private List<UseCase> useCases;
-        [System.Serializable]
+        [SerializeField]
         private List<Sequence> sequances;
 
         private IdHandler idHandler;
@@ -30,7 +30,13 @@ namespace NodeUML
 
             //temp:
             sequances = new List<Sequence>();
-            Sequence s = new Sequence();
+            CreateSequence("asdasdas", Sequence.SequanceType.actor);
+            CreateSequence("asdasdas", Sequence.SequanceType.object_);
+        }
+
+        public void CreateSequence(string name, Sequence.SequanceType type)
+        {
+            Sequence s = new Sequence(idHandler.GetSequenceID(), name, type);
             sequances.Add(s);
         }
 
@@ -43,6 +49,12 @@ namespace NodeUML
 
         public void Update()
         {
+            GUILayout.BeginArea(new Rect(0, 0, win.position.width, win.position.height - win.position.height / 4));
+            GUILayout.BeginHorizontal();
+            UpdateSequence();
+            GUILayout.EndHorizontal();
+            GUILayout.EndArea();
+
             GUILayout.BeginArea(new Rect(0, win.position.height - win.position.height / 4, win.position.width, win.position.height / 4));
             GUILayout.BeginHorizontal();
 
@@ -57,26 +69,17 @@ namespace NodeUML
             GUILayout.BeginVertical();
             DrawClasses();
             GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            DrawTools();
-            GUILayout.EndVertical();
             
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
         }
 
-        private void DrawTools()
+        private void UpdateSequence()
         {
-            GUILayout.Label("Tools: ");
-            if (GUILayout.Button("LOOP"))
+            for (int i = 0; i < sequances.Count; i++)
             {
-
-            }
-
-            if (GUILayout.Button("ALT"))
-            {
-
+                GUILayout.Space(40);
+                sequances[i].Draw();
             }
         }
 
@@ -95,9 +98,9 @@ namespace NodeUML
         private void DrawActors()
         {
             GUILayout.Label("Actors: ");
-            for (int i = 0; i < useCases.Count; i++)
+            for (int i = 0; i < actors.Count; i++)
             {
-                if (GUILayout.Button(useCases[i].useCaseName))
+                if (GUILayout.Button(actors[i].actorName))
                 {
                     
                 }
